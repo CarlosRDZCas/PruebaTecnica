@@ -1,16 +1,24 @@
 part of 'pokemon_bloc.dart';
 
 @immutable
-abstract class PokemonState {
-  final Pokemon? pokemon;
+abstract class PokemonState {}
 
-  PokemonState(this.pokemon);
+class PokemonInitialState extends PokemonState {}
+
+class PokemonLoadingState extends PokemonState {}
+
+class PokemonLoadedState extends PokemonState {
+  final List<Pokemon>? pokemon;
+
+  Stream<List<Pokemon>?> get getPokemon async* {
+    final List<Pokemon>? pokemons = [];
+    for (var pok in pokemon!) {
+      pokemons!.add(pok);
+      yield pokemons;
+    }
+  }
+
+  PokemonLoadedState({required this.pokemon});
 }
 
-class PokemonInitial extends PokemonState {
-  PokemonInitial() : super(null);
-}
-
-class PokemonLoading extends PokemonState {
-  PokemonLoading(Pokemon pokemon) : super(pokemon);
-}
+class PokemonErrorState extends PokemonState {}

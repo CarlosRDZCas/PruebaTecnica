@@ -2,7 +2,6 @@
 //
 //     final pokemon = pokemonFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Pokemon {
@@ -27,24 +26,24 @@ class Pokemon {
     required this.weight,
   });
 
-  List<Ability> abilities;
-  int baseExperience;
-  List<Species> forms;
-  List<GameIndex> gameIndices;
-  int height;
-  List<dynamic> heldItems;
-  int id;
-  bool isDefault;
-  String locationAreaEncounters;
-  List<Move> moves;
-  String name;
-  int order;
-  List<dynamic> pastTypes;
-  Species species;
-  Sprites sprites;
-  List<Stat> stats;
-  List<Type> types;
-  int weight;
+  final List<Ability> abilities;
+  final int baseExperience;
+  final List<Species> forms;
+  final List<GameIndex> gameIndices;
+  final int height;
+  final List<dynamic> heldItems;
+  final int id;
+  final bool isDefault;
+  final String locationAreaEncounters;
+  final List<Move> moves;
+  final String name;
+  final int order;
+  final List<dynamic> pastTypes;
+  final Species species;
+  final Sprites sprites;
+  final List<Stat> stats;
+  final List<Type> types;
+  final int weight;
 
   factory Pokemon.fromJson(String str) => Pokemon.fromMap(json.decode(str));
 
@@ -102,9 +101,9 @@ class Ability {
     required this.slot,
   });
 
-  Species ability;
-  bool isHidden;
-  int slot;
+  final Species ability;
+  final bool isHidden;
+  final int slot;
 
   factory Ability.fromJson(String str) => Ability.fromMap(json.decode(str));
 
@@ -129,8 +128,8 @@ class Species {
     required this.url,
   });
 
-  String name;
-  String url;
+  final String name;
+  final String url;
 
   factory Species.fromJson(String str) => Species.fromMap(json.decode(str));
 
@@ -153,8 +152,8 @@ class GameIndex {
     required this.version,
   });
 
-  int gameIndex;
-  Species version;
+  final int gameIndex;
+  final Species version;
 
   factory GameIndex.fromJson(String str) => GameIndex.fromMap(json.decode(str));
 
@@ -177,8 +176,8 @@ class Move {
     required this.versionGroupDetails,
   });
 
-  Species move;
-  List<VersionGroupDetail> versionGroupDetails;
+  final Species move;
+  final List<VersionGroupDetail> versionGroupDetails;
 
   factory Move.fromJson(String str) => Move.fromMap(json.decode(str));
 
@@ -205,9 +204,9 @@ class VersionGroupDetail {
     required this.versionGroup,
   });
 
-  int levelLearnedAt;
-  Species moveLearnMethod;
-  Species versionGroup;
+  final int levelLearnedAt;
+  final Species moveLearnMethod;
+  final Species versionGroup;
 
   factory VersionGroupDetail.fromJson(String str) =>
       VersionGroupDetail.fromMap(json.decode(str));
@@ -233,7 +232,7 @@ class GenerationV {
     required this.blackWhite,
   });
 
-  Sprites blackWhite;
+  final Sprites blackWhite;
 
   factory GenerationV.fromJson(String str) =>
       GenerationV.fromMap(json.decode(str));
@@ -256,9 +255,9 @@ class GenerationIv {
     required this.platinum,
   });
 
-  Sprites diamondPearl;
-  Sprites heartgoldSoulsilver;
-  Sprites platinum;
+  final Sprites diamondPearl;
+  final Sprites heartgoldSoulsilver;
+  final Sprites platinum;
 
   factory GenerationIv.fromJson(String str) =>
       GenerationIv.fromMap(json.decode(str));
@@ -290,14 +289,14 @@ class Versions {
     required this.generationViii,
   });
 
-  GenerationI generationI;
-  GenerationIi generationIi;
-  GenerationIii generationIii;
-  GenerationIv generationIv;
-  GenerationV generationV;
-  Map<String, Home> generationVi;
-  GenerationVii generationVii;
-  GenerationViii generationViii;
+  final GenerationI generationI;
+  final GenerationIi generationIi;
+  final GenerationIii generationIii;
+  final GenerationIv generationIv;
+  final GenerationV generationV;
+  final Map<String, Home> generationVi;
+  final GenerationVii generationVii;
+  final GenerationViii generationViii;
 
   factory Versions.fromJson(String str) => Versions.fromMap(json.decode(str));
 
@@ -343,17 +342,17 @@ class Sprites {
     required this.animated,
   });
 
-  String backDefault;
-  dynamic backFemale;
-  String backShiny;
-  dynamic backShinyFemale;
-  String frontDefault;
-  dynamic frontFemale;
-  String frontShiny;
-  dynamic frontShinyFemale;
-  Other other;
-  Versions versions;
-  Sprites animated;
+  final String backDefault;
+  final dynamic backFemale;
+  final String backShiny;
+  final dynamic backShinyFemale;
+  final String frontDefault;
+  final dynamic frontFemale;
+  final String frontShiny;
+  final dynamic frontShinyFemale;
+  final Other? other;
+  final Versions? versions;
+  final Sprites? animated;
 
   factory Sprites.fromJson(String str) => Sprites.fromMap(json.decode(str));
 
@@ -368,9 +367,12 @@ class Sprites {
         frontFemale: json["front_female"],
         frontShiny: json["front_shiny"],
         frontShinyFemale: json["front_shiny_female"],
-        other: json["other"],
-        versions: json["versions"],
-        animated: json["animated"],
+        other: json["other"] == null ? null : Other.fromMap(json["other"]),
+        versions: json["versions"] == null
+            ? null
+            : Versions.fromMap(json["versions"]),
+        animated:
+            json["animated"] == null ? null : Sprites.fromMap(json["animated"]),
       );
 
   Map<String, dynamic> toMap() => {
@@ -382,9 +384,9 @@ class Sprites {
         "front_female": frontFemale,
         "front_shiny": frontShiny,
         "front_shiny_female": frontShinyFemale,
-        "other": other == null ? null : other.toMap(),
-        "versions": versions == null ? null : versions.toMap(),
-        "animated": animated == null ? null : animated.toMap(),
+        "other": other == null ? null : other!.toMap(),
+        "versions": versions == null ? null : versions!.toMap(),
+        "animated": animated == null ? null : animated!.toMap(),
       };
 }
 
@@ -394,8 +396,8 @@ class GenerationI {
     required this.yellow,
   });
 
-  RedBlue redBlue;
-  RedBlue yellow;
+  final RedBlue redBlue;
+  final RedBlue yellow;
 
   factory GenerationI.fromJson(String str) =>
       GenerationI.fromMap(json.decode(str));
@@ -423,12 +425,12 @@ class RedBlue {
     required this.frontTransparent,
   });
 
-  String backDefault;
-  String backGray;
-  String backTransparent;
-  String frontDefault;
-  String frontGray;
-  String frontTransparent;
+  final String backDefault;
+  final String backGray;
+  final String backTransparent;
+  final String frontDefault;
+  final String frontGray;
+  final String frontTransparent;
 
   factory RedBlue.fromJson(String str) => RedBlue.fromMap(json.decode(str));
 
@@ -460,9 +462,9 @@ class GenerationIi {
     required this.silver,
   });
 
-  Crystal crystal;
-  Gold gold;
-  Gold silver;
+  final Crystal crystal;
+  final Gold gold;
+  final Gold silver;
 
   factory GenerationIi.fromJson(String str) =>
       GenerationIi.fromMap(json.decode(str));
@@ -494,14 +496,14 @@ class Crystal {
     required this.frontTransparent,
   });
 
-  String backDefault;
-  String backShiny;
-  String backShinyTransparent;
-  String backTransparent;
-  String frontDefault;
-  String frontShiny;
-  String frontShinyTransparent;
-  String frontTransparent;
+  final String backDefault;
+  final String backShiny;
+  final String backShinyTransparent;
+  final String backTransparent;
+  final String frontDefault;
+  final String frontShiny;
+  final String frontShinyTransparent;
+  final String frontTransparent;
 
   factory Crystal.fromJson(String str) => Crystal.fromMap(json.decode(str));
 
@@ -539,11 +541,11 @@ class Gold {
     required this.frontTransparent,
   });
 
-  String backDefault;
-  String backShiny;
-  String frontDefault;
-  String frontShiny;
-  String frontTransparent;
+  final String backDefault;
+  final String backShiny;
+  final String frontDefault;
+  final String frontShiny;
+  final String frontTransparent;
 
   factory Gold.fromJson(String str) => Gold.fromMap(json.decode(str));
 
@@ -555,16 +557,16 @@ class Gold {
         frontDefault: json["front_default"],
         frontShiny: json["front_shiny"],
         frontTransparent: json["front_transparent"] == null
-            ? null
+            ? ''
             : json["front_transparent"],
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => { 
         "back_default": backDefault,
         "back_shiny": backShiny,
         "front_default": frontDefault,
         "front_shiny": frontShiny,
-        "front_transparent": frontTransparent == null ? null : frontTransparent,
+        "front_transparent": frontTransparent == null ? '' : frontTransparent,
       };
 }
 
@@ -575,9 +577,9 @@ class GenerationIii {
     required this.rubySapphire,
   });
 
-  Emerald emerald;
-  Gold fireredLeafgreen;
-  Gold rubySapphire;
+  final Emerald emerald;
+  final Gold fireredLeafgreen;
+  final Gold rubySapphire;
 
   factory GenerationIii.fromJson(String str) =>
       GenerationIii.fromMap(json.decode(str));
@@ -603,8 +605,8 @@ class Emerald {
     required this.frontShiny,
   });
 
-  String frontDefault;
-  String frontShiny;
+  final String frontDefault;
+  final String frontShiny;
 
   factory Emerald.fromJson(String str) => Emerald.fromMap(json.decode(str));
 
@@ -629,10 +631,10 @@ class Home {
     required this.frontShinyFemale,
   });
 
-  String frontDefault;
-  dynamic frontFemale;
-  String frontShiny;
-  dynamic frontShinyFemale;
+  final String frontDefault;
+  final dynamic frontFemale;
+  final String frontShiny;
+  final dynamic frontShinyFemale;
 
   factory Home.fromJson(String str) => Home.fromMap(json.decode(str));
 
@@ -659,8 +661,8 @@ class GenerationVii {
     required this.ultraSunUltraMoon,
   });
 
-  DreamWorld icons;
-  Home ultraSunUltraMoon;
+  final DreamWorld icons;
+  final Home ultraSunUltraMoon;
 
   factory GenerationVii.fromJson(String str) =>
       GenerationVii.fromMap(json.decode(str));
@@ -684,8 +686,8 @@ class DreamWorld {
     required this.frontFemale,
   });
 
-  String frontDefault;
-  dynamic frontFemale;
+  final String frontDefault;
+  final dynamic frontFemale;
 
   factory DreamWorld.fromJson(String str) =>
       DreamWorld.fromMap(json.decode(str));
@@ -708,7 +710,7 @@ class GenerationViii {
     required this.icons,
   });
 
-  DreamWorld icons;
+  final DreamWorld icons;
 
   factory GenerationViii.fromJson(String str) =>
       GenerationViii.fromMap(json.decode(str));
@@ -731,9 +733,9 @@ class Other {
     required this.officialArtwork,
   });
 
-  DreamWorld dreamWorld;
-  Home home;
-  OfficialArtwork officialArtwork;
+  final DreamWorld dreamWorld;
+  final Home home;
+  final OfficialArtwork officialArtwork;
 
   factory Other.fromJson(String str) => Other.fromMap(json.decode(str));
 
@@ -757,7 +759,7 @@ class OfficialArtwork {
     required this.frontDefault,
   });
 
-  String frontDefault;
+  final String frontDefault;
 
   factory OfficialArtwork.fromJson(String str) =>
       OfficialArtwork.fromMap(json.decode(str));
@@ -780,9 +782,9 @@ class Stat {
     required this.stat,
   });
 
-  int baseStat;
-  int effort;
-  Species stat;
+  final int baseStat;
+  final int effort;
+  final Species stat;
 
   factory Stat.fromJson(String str) => Stat.fromMap(json.decode(str));
 
@@ -807,8 +809,8 @@ class Type {
     required this.type,
   });
 
-  int slot;
-  Species type;
+  final int slot;
+  final Species type;
 
   factory Type.fromJson(String str) => Type.fromMap(json.decode(str));
 
