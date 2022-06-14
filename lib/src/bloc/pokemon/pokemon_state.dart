@@ -8,17 +8,8 @@ class PokemonInitialState extends PokemonState {}
 class PokemonLoadingState extends PokemonState {}
 
 class PokemonLoadedState extends PokemonState {
-  final List<Pokemon>? pokemon;
-
-  Stream<List<Pokemon>?> get getPokemon async* {
-    final List<Pokemon>? pokemons = [];
-    for (var pok in pokemon!) {
-      pokemons!.add(pok);
-      yield pokemons;
-    }
-  }
-
-  PokemonLoadedState({required this.pokemon});
+  final List<Pokemon> pokemons;
+  PokemonLoadedState({required this.pokemons});
 }
 
 class PokemonErrorState extends PokemonState {}

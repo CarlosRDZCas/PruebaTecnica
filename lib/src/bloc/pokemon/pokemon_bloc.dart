@@ -9,13 +9,16 @@ part 'pokemon_state.dart';
 
 class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   final PokemonServices _pokemonServices;
+  List<Pokemon> list = [];
   PokemonBloc(this._pokemonServices) : super(PokemonInitialState()) {
     on<PokemonEvent>((event, emit) async {
-      if (event is LoadPokemonEvent) {
+      if (event is LoadingPokemonEvent) {
         emit(PokemonLoadingState());
-        List<Pokemon>? pokemon = await _pokemonServices.getPokemon();
+        Pokemon? pokemon = await _pokemonServices.getPokemonbyID(event.id);
+        list.add(pokemon!);
+        list.sort((a, b) => a.id.compareTo(b.id));
         if (pokemon != null) {
-          emit(PokemonLoadedState(pokemon: pokemon));
+          emit(PokemonLoadedState(pokemons: list));
         } else {
           emit(PokemonErrorState());
         }

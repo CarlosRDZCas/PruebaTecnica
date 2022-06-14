@@ -18,4 +18,16 @@ class PokemonServices {
     }
     return list;
   }
+
+  Future<Pokemon>? getPokemonbyID(int id) async {
+    final url = Uri.https(_baseUrl, '/api/v2/pokemon/${id}');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print(id);
+      return Pokemon.fromJson(response.body);
+    } else {
+      print(id);
+      throw Exception('Failed to load pokemon');
+    }
+  }
 }
