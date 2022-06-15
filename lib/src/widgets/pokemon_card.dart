@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/pokemon_model.dart';
+import '../services/pokemon_details_service.dart';
 
 class CardPokemon extends StatelessWidget {
   Pokemon? pokemon;
@@ -156,15 +157,17 @@ Widget _tipos(List<Type> tipo) {
         ),
         child: Padding(
           padding: const EdgeInsets.all(2.0),
-          child: Text(
-            tipo[index].type.name,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontSize: 9,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w100,
-                fontFamily: 'Pokemon',
-                color: Colors.white),
+          child: Center(
+            child: Text(
+              tipo[index].type.name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontSize: 9,
+                  letterSpacing: 2,
+                  fontWeight: FontWeight.w100,
+                  fontFamily: 'Pokemon',
+                  color: Colors.white),
+            ),
           ),
         ),
       );
