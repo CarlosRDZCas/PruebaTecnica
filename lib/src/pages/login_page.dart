@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/src/settings/preferences.dart';
@@ -43,62 +44,68 @@ class LoginForm extends StatelessWidget {
             child: Column(children: [
               BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
-                  return TextFormField(
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Pokemon',
-                        letterSpacing: 2),
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      hintText: 'Usuario',
-                      hintStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Pokemon',
-                      ),
-                      filled: true,
-                      fillColor: Colors.white70,
-                      focusedBorder: OutlineInputBorder(
+                  return BounceInLeft(
+                    delay: Duration(milliseconds: 500),
+                    child: TextFormField(
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Pokemon',
+                          letterSpacing: 2),
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        hintText: 'Usuario',
+                        hintStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontFamily: 'Pokemon',
+                        ),
+                        filled: true,
+                        fillColor: Colors.white70,
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.black)),
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.black)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
+                      onChanged: (value) {
+                        context.read<LoginBloc>().add(LoginUserEvent(value));
+                      },
+                      validator: (value) =>
+                          state.isValid ? null : 'Usuario invalido',
                     ),
-                    onChanged: (value) {
-                      context.read<LoginBloc>().add(LoginUserEvent(value));
-                    },
-                    validator: (value) =>
-                        state.isValid ? null : 'Usuario invalido',
                   );
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      const Color.fromARGB(255, 3, 78, 139)),
-                  overlayColor: MaterialStateProperty.all(Colors.green),
-                ),
-                child: const Text(
-                  'Ingresar',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Pokemon',
-                    color: Colors.yellow,
+              BounceInDown(
+                delay: Duration(milliseconds: 500),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 3, 78, 139)),
+                    overlayColor: MaterialStateProperty.all(Colors.green),
                   ),
-                ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    if (Preferences.getUser() != '') {
-                      print('Usuario existente');
-                    } else {
-                      Preferences.setUser(loginbloc.state.user);
-                      print('Usuario nuevo');
-                      Navigator.pushNamed(context, '/home');
+                  child: const Text(
+                    'Ingresar',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Pokemon',
+                      color: Colors.yellow,
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (Preferences.getUser() != '') {
+                        print('Usuario existente');
+                      } else {
+                        Preferences.setUser(loginbloc.state.user);
+                        print('Usuario nuevo');
+                        Navigator.pushNamed(context, '/home');
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ])),
       ]),
@@ -129,23 +136,29 @@ class CustomBackGround extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Stack(
             children: [
-              Text(
-                'Pokemon',
-                style: TextStyle(
-                  fontSize: 35,
-                  fontFamily: 'Pokemon',
-                  foreground: Paint()
-                    ..style = PaintingStyle.stroke
-                    ..strokeWidth = 10
-                    ..color = const Color.fromARGB(255, 3, 78, 139),
+              BounceInDown(
+                delay: Duration(milliseconds: 500),
+                child: Text(
+                  'Pokemon',
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontFamily: 'Pokemon',
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 10
+                      ..color = const Color.fromARGB(255, 3, 78, 139),
+                  ),
                 ),
               ),
-              const Text(
-                'Pokemon',
-                style: TextStyle(
-                  fontSize: 35,
-                  fontFamily: 'Pokemon',
-                  color: Colors.yellow,
+              BounceInDown(
+                delay: Duration(milliseconds: 500),
+                child: const Text(
+                  'Pokemon',
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontFamily: 'Pokemon',
+                    color: Colors.yellow,
+                  ),
                 ),
               ),
             ],

@@ -10,6 +10,9 @@ getRoutes() {
             builder: (_) => LoginPage(), settings: settings);
       case '/home':
         return MaterialPageRoute(builder: (_) => Pokedex(), settings: settings);
+      case '/pokemondetails':
+        return MaterialPageRoute(
+            builder: (_) => PokemonDetailsPage(), settings: settings);
     }
   };
 }

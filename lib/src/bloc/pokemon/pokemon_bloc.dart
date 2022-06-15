@@ -14,7 +14,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     on<PokemonEvent>((event, emit) async {
       if (event is LoadingPokemonEvent) {
         emit(PokemonLoadingState());
-        Pokemon? pokemon = await _pokemonServices.getPokemonbyID(event.id);
+        Pokemon? pokemon = await _pokemonServices.getPokemonbyID(event.id!);
         list.add(pokemon!);
         list.sort((a, b) => a.id.compareTo(b.id));
         if (pokemon != null) {

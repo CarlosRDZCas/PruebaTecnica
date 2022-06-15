@@ -6,6 +6,6 @@ abstract class PokemonEvent {}
 class LoadPokemonEvent extends PokemonEvent {}
 
 class LoadingPokemonEvent extends PokemonEvent {
-  int id;
+  int? id;
   LoadingPokemonEvent(this.id);
 }
