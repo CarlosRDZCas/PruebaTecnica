@@ -11,10 +11,53 @@ class Pokedex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: BlocBuilder<PokemonBloc, PokemonState>(
+      appBar: AppBar(
+        toolbarHeight: kToolbarHeight + 20,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: FadeInLeft(
+          child: const Text(
+            'Pokedex',
+            style: TextStyle(
+                fontFamily: 'Pokemon',
+                fontSize: 35,
+                letterSpacing: 3,
+                color: Colors.black,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      endDrawer: BlocBuilder<PokemonBloc, PokemonState>(
         builder: (context, state) {
-          return FloatingActionButton(
+          if (state is PokemonLoadedState) {
+            return CustomDrawer(pokemons: state.pokemons);
+          }
+          return Drawer();
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: const CustomFAB(),
+      body: Column(
+        children: const [
+          CardsGenerator(),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomFAB extends StatelessWidget {
+  const CustomFAB({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PokemonBloc, PokemonState>(
+      builder: (context, state) {
+        return FadeInUp(
+          child: FloatingActionButton(
             backgroundColor: Colors.blueGrey,
             child: Padding(
               padding: const EdgeInsets.all(4.0),
@@ -29,44 +72,9 @@ class Pokedex extends StatelessWidget {
                     arguments: state.pokemons);
               }
             },
-          );
-        },
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * .12,
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 35),
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
-                  alignment: Alignment.center,
-                  child: FadeInLeft(
-                    duration: Duration(seconds: 1),
-                    delay: Duration(milliseconds: 500),
-                    child: const Text(
-                      'Pokedex',
-                      style: TextStyle(
-                          fontFamily: 'Pokemon',
-                          fontSize: 35,
-                          letterSpacing: 3,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Spacer(),
-                Container(
-                  margin: const EdgeInsets.only(top: 28),
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
-                  child: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
-                )
-              ],
-            ),
           ),
-          CardsGenerator(),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -85,27 +93,33 @@ class CardsGenerator extends StatelessWidget {
             for (var i = 1; i < 151; i++) {
               context.read<PokemonBloc>().add(LoadingPokemonEvent(i));
             }
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Image.asset(
+                'assets/images/pokeballwingle.gif',
+              ),
             );
           } else if (state is PokemonLoadingState) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: Image.asset(
+                'assets/images/pokeballwingle.gif',
+              ),
+            );
           } else if (state is PokemonLoadedState) {
-            state.pokemons.sort((a, b) => a.id.compareTo(b.id));
+            state.pokemons!.sort((a, b) => a.id.compareTo(b.id));
             return GridView.builder(
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: state.pokemons.length,
+              itemCount: state.pokemons!.length,
               itemBuilder: (BuildContext context, int index) {
                 return FadeInLeft(
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     child: Hero(
-                        tag: 'pokemon-${state.pokemons[index].id}',
+                        tag: 'pokemon-${state.pokemons![index].id}',
                         child: FadeOut(
                             child: CardPokemon(
-                          pokemon: state.pokemons[index],
+                          pokemon: state.pokemons![index],
                         ))));
               },
             );

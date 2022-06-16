@@ -45,7 +45,7 @@ class LoginForm extends StatelessWidget {
               BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   return BounceInLeft(
-                    delay: Duration(milliseconds: 500),
+                    delay: const Duration(milliseconds: 500),
                     child: TextFormField(
                       style: const TextStyle(
                           color: Colors.black,
@@ -79,7 +79,7 @@ class LoginForm extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               BounceInDown(
-                delay: Duration(milliseconds: 500),
+                delay: const Duration(milliseconds: 500),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
@@ -97,10 +97,9 @@ class LoginForm extends StatelessWidget {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (Preferences.getUser() != '') {
-                        print('Usuario existente');
                       } else {
                         Preferences.setUser(loginbloc.state.user);
-                        print('Usuario nuevo');
+
                         Navigator.pushNamed(context, '/home');
                       }
                     }
@@ -137,7 +136,7 @@ class CustomBackGround extends StatelessWidget {
           child: Stack(
             children: [
               BounceInDown(
-                delay: Duration(milliseconds: 500),
+                delay: const Duration(milliseconds: 500),
                 child: Text(
                   'Pokemon',
                   style: TextStyle(
@@ -151,7 +150,7 @@ class CustomBackGround extends StatelessWidget {
                 ),
               ),
               BounceInDown(
-                delay: Duration(milliseconds: 500),
+                delay: const Duration(milliseconds: 500),
                 child: const Text(
                   'Pokemon',
                   style: TextStyle(

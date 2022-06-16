@@ -7,15 +7,16 @@ getRoutes() {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-            builder: (_) => LoginPage(), settings: settings);
+            builder: (_) => const LoginPage(), settings: settings);
       case '/home':
-        return MaterialPageRoute(builder: (_) => Pokedex(), settings: settings);
+        return MaterialPageRoute(
+            builder: (_) => const Pokedex(), settings: settings);
       case '/pokemondetails':
         return MaterialPageRoute(
-            builder: (_) => PokemonDetailsPage(), settings: settings);
+            builder: (_) => const PokemonDetailsPage(), settings: settings);
       case '/selectteam':
         return MaterialPageRoute(
-            builder: (_) => SelectTeam(), settings: settings);
+            builder: (_) => const SelectTeam(), settings: settings);
     }
   };
 }

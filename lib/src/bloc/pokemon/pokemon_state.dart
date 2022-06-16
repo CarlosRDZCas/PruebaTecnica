@@ -8,7 +8,7 @@ class PokemonInitialState extends PokemonState {}
 class PokemonLoadingState extends PokemonState {}
 
 class PokemonLoadedState extends PokemonState {
-  final List<Pokemon> pokemons;
+  final List<Pokemon>? pokemons;
   PokemonLoadedState({required this.pokemons});
 }
 

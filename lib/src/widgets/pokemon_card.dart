@@ -5,11 +5,12 @@ import '../bloc/selectteam/selectteam_bloc.dart';
 import '../models/pokemon_model.dart';
 
 class CardPokemon extends StatelessWidget {
-  Pokemon? pokemon;
-  String? pantalla;
-  bool? selectable = false;
+  final Pokemon? pokemon;
+  final String? pantalla;
+  final bool? selectable;
 
-  CardPokemon({Key? key, required this.pokemon, this.pantalla, this.selectable})
+  const CardPokemon(
+      {Key? key, required this.pokemon, this.pantalla, this.selectable = false})
       : super(key: key);
 
   @override
@@ -34,8 +35,6 @@ class CardPokemon extends StatelessWidget {
                           .read<SelectteamBloc>()
                           .add(SelectedPokemonEvent());
                     }
-                    print(state.selectedPokemons);
-                    print(state.selectedPokemonsLength);
                   },
                   child: CardBody(
                     pantalla: pantalla,
@@ -74,8 +73,8 @@ class CardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: pantalla == 'details'
-          ? EdgeInsets.only(top: 45, left: 30, right: 30, bottom: 35)
-          : EdgeInsets.all(0),
+          ? const EdgeInsets.only(top: 45, left: 30, right: 30, bottom: 35)
+          : const EdgeInsets.all(0),
       margin: pantalla == 'details'
           ? const EdgeInsets.all(0)
           : pantalla == 'Equipo'
@@ -116,8 +115,8 @@ class CardBody extends StatelessWidget {
           Positioned(
             top: pantalla == 'details' ? 40 : 30,
             left: 8,
-            child: Container(
-                height: 20, width: 150, child: _tipos(pokemon!.types)),
+            child:
+                SizedBox(height: 20, width: 150, child: _tipos(pokemon!.types)),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
@@ -152,7 +151,7 @@ class CardBody extends StatelessWidget {
           Positioned(
             right: pantalla == 'details' ? 40 : 0,
             bottom: pantalla == 'details' ? -10 : 0,
-            child: Container(
+            child: SizedBox(
               height: pantalla == 'details' ? 200 : 130,
               width: pantalla == 'details' ? 200 : 130,
               child: Image.network(
@@ -219,7 +218,7 @@ Widget _tipos(List<Type> tipo) {
     scrollDirection: Axis.horizontal,
     itemBuilder: (BuildContext context, int index) {
       return Container(
-        margin: EdgeInsets.only(right: 8),
+        margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white30,

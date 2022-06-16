@@ -9,7 +9,7 @@ class Preferences {
   }
 
   static setUser(String user) {
-    _prefs.setString(user, user);
+    _prefs.setString('user', user);
     Preferences.user = user;
   }
 
