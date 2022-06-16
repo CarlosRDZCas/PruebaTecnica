@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
-import 'package:pokedex/src/models/pokemon_details_model.dart';
+
+import '../models/models.dart';
 
 class PokemonDetailsService {
   String _baseUrl = 'pokeapi.co';

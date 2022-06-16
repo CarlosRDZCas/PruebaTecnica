@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/pokemon/pokemon_bloc.dart';
-import '../models/pokemon_model.dart';
 import '../widgets/widgets.dart';
 
 class Pokedex extends StatelessWidget {

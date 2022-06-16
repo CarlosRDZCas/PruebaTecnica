@@ -2,11 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:pokedex/src/models/pokemon_details_model.dart';
+
 import 'package:pokedex/src/widgets/widgets.dart';
 
 import '../bloc/pokemondetails/pokemondetails_bloc.dart';
-import '../models/pokemon_model.dart';
+import '../models/models.dart';
 import '../services/pokemon_details_service.dart';
 
 class PokemonDetailsPage extends StatelessWidget {
@@ -416,13 +416,6 @@ class Estadisticas extends StatelessWidget {
       ),
     );
   }
-}
-
-class StatsData {
-  String name = '';
-  int value = 0;
-  MaterialColor colors;
-  StatsData(this.name, this.value, this.colors);
 }
 
 class Movimientos extends StatelessWidget {

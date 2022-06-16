@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/src/bloc/pokemondetails/pokemondetails_bloc.dart';
-import 'package:pokedex/src/models/pokemon_details_model.dart';
-import 'package:pokedex/src/services/pokemon_details_service.dart';
-import 'package:pokedex/src/services/pokemon_services.dart';
+import 'package:pokedex/src/services/services.dart';
 
 import 'src/bloc/login/login_bloc.dart';
 import 'src/bloc/pokemon/pokemon_bloc.dart';
