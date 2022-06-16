@@ -62,14 +62,15 @@ class DBProvider {
     }
   }
 
-  Future<TeamModel> selectTeams(String user) async {
+  Future<List<TeamModel>> selectTeams(String user) async {
     try {
       final db = await database;
       final res = await db!.rawQuery('''
       SELECT * FROM PokemonTeam WHERE Usuario = "$user";''');
       print(res);
-      TeamModel team = TeamModel('', '', []);
+      List<TeamModel> listTeam = [];
       for (var element in res) {
+        TeamModel team = TeamModel('', '', []);
         team.usuario = element['Usuario'].toString();
         team.nombreEquipo = element['NombreEquipo'].toString();
         final res2 = await db.rawQuery('''
@@ -78,10 +79,11 @@ class DBProvider {
         for (var element2 in res2) {
           team.pokemons.add(element2['Pokemon'].toString());
         }
+        listTeam.add(team);
       }
-      return team;
+      return listTeam;
     } catch (Exception) {
-      return TeamModel('', '', []);
+      return [];
     }
   }
 }
