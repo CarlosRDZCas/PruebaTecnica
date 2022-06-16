@@ -10,10 +10,8 @@ class PokemonServices {
       final url = Uri.https(_baseUrl, '/api/v2/pokemon/${i}');
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print(i);
         list.add(Pokemon.fromJson(response.body));
       } else {
-        print(i);
         throw Exception('Failed to load pokemon');
       }
     }
@@ -24,10 +22,8 @@ class PokemonServices {
     final url = Uri.https(_baseUrl, '/api/v2/pokemon/${id}');
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      print(id);
       return Pokemon.fromJson(response.body);
     } else {
-      print(id);
       throw Exception('Failed to load pokemon');
     }
   }

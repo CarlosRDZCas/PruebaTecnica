@@ -29,15 +29,20 @@ class PokemonDetailsPage extends StatelessWidget {
               }
 
               if (state is PokemondetailsLoadedState) {
-                return Stack(
-                  children: [
-                    Banner(pokemon: pokemon),
-                    Details(
-                      pokemon: pokemon,
-                      pokemonDetails: state.pokemonDetails!,
-                    ),
-                    const Header(),
-                  ],
+                return Container(
+                  child: Stack(
+                    children: [
+                      Banner(pokemon: pokemon),
+                      const Header(),
+                      Transform.translate(
+                        offset: const Offset(0, 270),
+                        child: Details(
+                          pokemon: pokemon,
+                          pokemonDetails: state.pokemonDetails!,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
 
@@ -92,63 +97,62 @@ class Details extends StatelessWidget {
         length: 3,
         child: FadeInUp(
           duration: const Duration(milliseconds: 400),
-          child: Transform.translate(
-            offset: const Offset(0, 270),
-            child: Container(
-                alignment: Alignment.topCenter,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
+          child: Container(
+              alignment: Alignment.topCenter,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    const TabBar(
-                        isScrollable: true,
-                        labelStyle: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Pokemon',
-                          letterSpacing: 1.8,
-                        ),
-                        padding: EdgeInsets.all(8),
-                        indicatorColor: Colors.black,
-                        labelColor: Colors.black,
-                        tabs: [
-                          Tab(
-                            text: 'Acerca de',
-                          ),
-                          Tab(
-                            text: 'Estadisticas',
-                          ),
-                          Tab(
-                            text: 'Movimientos',
-                          ),
-                        ]),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 0.0, top: 25),
-                        child: TabBarView(
-                            physics: const BouncingScrollPhysics(),
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: AcercaDe(
-                                  pokemon: pokemon,
-                                  pokemonDetails: pokemonDetails,
-                                ),
-                              ),
-                              Estadisticas(pokemon: pokemon),
-                              const Movimientos(),
-                            ]),
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  const TabBar(
+                      isScrollable: true,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'Pokemon',
+                        letterSpacing: 1.8,
                       ),
+                      padding: EdgeInsets.all(8),
+                      indicatorColor: Colors.black,
+                      labelColor: Colors.black,
+                      tabs: [
+                        Tab(
+                          text: 'Acerca de',
+                        ),
+                        Tab(
+                          text: 'Estadisticas',
+                        ),
+                        Tab(
+                          text: 'Movimientos',
+                        ),
+                      ]),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0.0, top: 20),
+                      child: TabBarView(
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20.0),
+                              child: AcercaDe(
+                                  pokemon: pokemon,
+                                  pokemonDetails: pokemonDetails),
+                            ),
+                            Estadisticas(pokemon: pokemon),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 270.0),
+                              child: Movimientos(pokemon: pokemon),
+                            ),
+                          ]),
                     ),
-                  ],
-                )),
-          ),
+                  ),
+                ],
+              )),
         ));
   }
 }
@@ -275,7 +279,9 @@ class AcercaDe extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 6.0),
                         child: Center(
                           child: Text(
-                            pokemon.abilities[index].ability.name,
+                            pokemon.abilities[index].ability.name
+                                .capitalize()
+                                .replaceAll('-', ' '),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -304,7 +310,7 @@ class AcercaDe extends StatelessWidget {
                 ),
               ),
               Text(
-                pokemonDetails.habitat.name,
+                pokemonDetails.habitat.name.capitalize(),
                 style: const TextStyle(
                   fontSize: 12,
                   fontFamily: 'Pokemon',
@@ -325,7 +331,7 @@ class AcercaDe extends StatelessWidget {
                 ),
               ),
               Text(
-                pokemonDetails.growthRate.name,
+                pokemonDetails.growthRate.name.capitalize(),
                 style: const TextStyle(
                   fontSize: 12,
                   fontFamily: 'Pokemon',
@@ -346,7 +352,7 @@ class AcercaDe extends StatelessWidget {
                 ),
               ),
               Text(
-                pokemonDetails.shape.name,
+                pokemonDetails.shape.name.capitalize(),
                 style: const TextStyle(
                   fontSize: 12,
                   fontFamily: 'Pokemon',
@@ -370,7 +376,7 @@ class Estadisticas extends StatelessWidget {
     List<StatsData> listData = [];
     for (var item in pokemon!.stats) {
       StatsData statData = StatsData(
-        item.stat.name.replaceAll('-', ' '),
+        item.stat.name.replaceAll('-', ' ').capitalize(),
         item.baseStat,
         item.baseStat > 50
             ? item.baseStat < 76
@@ -381,7 +387,7 @@ class Estadisticas extends StatelessWidget {
       listData.add(statData);
     }
     return Transform.translate(
-      offset: const Offset(0, -170),
+      offset: const Offset(0, -190),
       child: FadeIn(
         duration: Duration(milliseconds: 600),
         child: Container(
@@ -419,12 +425,42 @@ class Estadisticas extends StatelessWidget {
 }
 
 class Movimientos extends StatelessWidget {
-  const Movimientos({Key? key}) : super(key: key);
+  final Pokemon? pokemon;
+  const Movimientos({Key? key, required this.pokemon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('Movimientos'),
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: pokemon!.moves.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.only(top: 3, bottom: 3, left: 15, right: 15),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0.0, 3), //(x,y)
+                blurRadius: 6.0,
+              ),
+            ],
+          ),
+          child: ListTile(
+            title: Text(
+              pokemon!.moves[index].move.name.capitalize().replaceAll('-', ' '),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 15,
+                fontFamily: 'Pokemon',
+                letterSpacing: 1.8,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

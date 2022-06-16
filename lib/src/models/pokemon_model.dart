@@ -556,12 +556,11 @@ class Gold {
         backShiny: json["back_shiny"],
         frontDefault: json["front_default"],
         frontShiny: json["front_shiny"],
-        frontTransparent: json["front_transparent"] == null
-            ? ''
-            : json["front_transparent"],
+        frontTransparent:
+            json["front_transparent"] == null ? '' : json["front_transparent"],
       );
 
-  Map<String, dynamic> toMap() => { 
+  Map<String, dynamic> toMap() => {
         "back_default": backDefault,
         "back_shiny": backShiny,
         "front_default": frontDefault,

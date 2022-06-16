@@ -1,98 +1,168 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/selectteam/selectteam_bloc.dart';
 import '../models/pokemon_model.dart';
 
 class CardPokemon extends StatelessWidget {
   Pokemon? pokemon;
   String? pantalla;
-  CardPokemon({Key? key, required this.pokemon, this.pantalla})
+  bool? selectable = false;
+
+  CardPokemon({Key? key, required this.pokemon, this.pantalla, this.selectable})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        pantalla == 'details'
-            ? null
-            : Navigator.pushNamed(context, '/pokemondetails',
-                arguments: pokemon);
-      },
-      child: Container(
-        padding: pantalla == 'details'
-            ? EdgeInsets.only(top: 45, left: 30, right: 30, bottom: 35)
-            : EdgeInsets.all(0),
-        margin: pantalla == 'details'
-            ? const EdgeInsets.all(0)
-            : const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: pantalla == 'details'
-              ? BorderRadius.circular(0)
-              : BorderRadius.circular(10),
-          color: _selectColor(pokemon!.types[0].type.name),
-        ),
-        height: 50,
-        width: 50,
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: pantalla == 'details' ? -10 : -30,
-              right: pantalla == 'details' ? -60 : -80,
-              child: Container(
-                height: pantalla == 'details' ? 200 : 160,
-                width: pantalla == 'details' ? 320 : 260,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Image.asset('assets/images/pokeball.png',
-                    fit: BoxFit.fill, color: Colors.white.withOpacity(0.3)),
-              ),
-            ),
-            Positioned(
-              top: pantalla == 'details' ? 40 : 30,
-              left: 8,
-              child: Container(
-                  height: 20, width: 150, child: _tipos(pokemon!.types)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Text(
-                    pokemon!.name.capitalize(),
-                    style: TextStyle(
-                        letterSpacing: 3,
-                        fontSize: pantalla == 'details' ? 20 : 15,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Pokemon',
-                        color: Colors.white),
+    return selectable == true
+        ? BlocBuilder<SelectteamBloc, SelectteamState>(
+            builder: (context, state) {
+              if (state is SelectteamInitial) {
+                context
+                    .read<SelectteamBloc>()
+                    .add(SelectteamEventInitial(pokemon: pokemon));
+              }
+              if (state is SelectedState) {
+                return InkWell(
+                  onTap: () {
+                    context
+                        .read<SelectteamBloc>()
+                        .add(SelectingteamEvent(pokemon!.name));
+
+                    if (state is SelectingState) {
+                      context
+                          .read<SelectteamBloc>()
+                          .add(SelectedPokemonEvent());
+                    }
+                    print(state.selectedPokemons);
+                    print(state.selectedPokemonsLength);
+                  },
+                  child: CardBody(
+                    pantalla: pantalla,
+                    pokemon: pokemon,
+                    pokemons: state.selectedPokemons,
                   ),
-                  const Spacer(),
-                  Text(
-                    '#' + pokemon!.id.toString(),
-                    style: const TextStyle(
-                        letterSpacing: 3,
-                        fontSize: 10,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Pokemon',
-                        color: Colors.white70),
-                  ),
-                ],
+                );
+              }
+              return Container();
+            },
+          )
+        : GestureDetector(
+            onTap: () {
+              pantalla == 'details'
+                  ? null
+                  : Navigator.pushNamed(context, '/pokemondetails',
+                      arguments: pokemon);
+            },
+            child: CardBody(pantalla: pantalla, pokemon: pokemon),
+          );
+  }
+}
+
+class CardBody extends StatelessWidget {
+  const CardBody({
+    Key? key,
+    required this.pantalla,
+    required this.pokemon,
+    this.pokemons,
+  }) : super(key: key);
+  final List<String>? pokemons;
+  final String? pantalla;
+  final Pokemon? pokemon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: pantalla == 'details'
+          ? EdgeInsets.only(top: 45, left: 30, right: 30, bottom: 35)
+          : EdgeInsets.all(0),
+      margin: pantalla == 'details'
+          ? const EdgeInsets.all(0)
+          : pantalla == 'Equipo'
+              ? pokemons != null && pokemons!.contains(pokemon!.name)
+                  ? const EdgeInsets.all(5)
+                  : const EdgeInsets.all(15)
+              : const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: pantalla == 'details'
+            ? BorderRadius.circular(0)
+            : BorderRadius.circular(10),
+        color: pantalla == 'Equipo'
+            ? pokemons != null && pokemons!.contains(pokemon!.name)
+                ? _selectColor(pokemon!.types[0].type.name)
+                : Colors.grey.withOpacity(0.5)
+            : _selectColor(pokemon!.types[0].type.name),
+      ),
+      height: 50,
+      width: 50,
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: pantalla == 'details' ? -10 : -30,
+            right: pantalla == 'details' ? -60 : -80,
+            child: Container(
+              height: pantalla == 'details' ? 200 : 160,
+              width: pantalla == 'details' ? 320 : 260,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Image.asset(
+                'assets/images/pokeball.png',
+                fit: BoxFit.fill,
+                color: Colors.white.withOpacity(0.3),
               ),
             ),
-            Positioned(
-              right: pantalla == 'details' ? 40 : 0,
-              bottom: pantalla == 'details' ? -10 : 0,
-              child: Container(
-                height: pantalla == 'details' ? 200 : 130,
-                width: pantalla == 'details' ? 200 : 130,
-                child: Image.network(
-                  pokemon!.sprites.other!.officialArtwork.frontDefault,
-                  fit: BoxFit.fill,
+          ),
+          Positioned(
+            top: pantalla == 'details' ? 40 : 30,
+            left: 8,
+            child: Container(
+                height: 20, width: 150, child: _tipos(pokemon!.types)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
+              children: [
+                Text(
+                  pokemon!.name.capitalize(),
+                  style: TextStyle(
+                      letterSpacing: 3,
+                      fontSize: pantalla == 'details' ? 20 : 15,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Pokemon',
+                      color: Colors.white),
                 ),
+                const Spacer(),
+                Text(
+                  pokemon!.id < 10
+                      ? '#00${pokemon!.id}'
+                      : pokemon!.id < 100
+                          ? '#0${pokemon!.id}'
+                          : '#${pokemon!.id}',
+                  style: const TextStyle(
+                      letterSpacing: 3,
+                      fontSize: 10,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Pokemon',
+                      color: Colors.white70),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: pantalla == 'details' ? 40 : 0,
+            bottom: pantalla == 'details' ? -10 : 0,
+            child: Container(
+              height: pantalla == 'details' ? 200 : 130,
+              width: pantalla == 'details' ? 200 : 130,
+              child: Image.network(
+                pokemon!.sprites.other!.officialArtwork.frontDefault,
+                fit: BoxFit.fill,
+                filterQuality: FilterQuality.medium,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -158,7 +228,7 @@ Widget _tipos(List<Type> tipo) {
           padding: const EdgeInsets.all(2.0),
           child: Center(
             child: Text(
-              tipo[index].type.name,
+              tipo[index].type.name.capitalize(),
               textAlign: TextAlign.center,
               style: const TextStyle(
                   fontSize: 9,

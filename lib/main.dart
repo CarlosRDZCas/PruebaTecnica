@@ -4,6 +4,7 @@ import 'package:pokedex/src/services/services.dart';
 
 import 'src/bloc/login/login_bloc.dart';
 import 'src/bloc/pokemon/pokemon_bloc.dart';
+import 'src/bloc/selectteam/selectteam_bloc.dart';
 import 'src/routes/routes.dart';
 import 'src/settings/preferences.dart';
 
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => PokemonBloc(PokemonServices()),
+          ),
+          BlocProvider(
+            create: (context) => SelectteamBloc(),
           ),
         ],
         child: MaterialApp(

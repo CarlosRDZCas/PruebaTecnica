@@ -13,6 +13,9 @@ getRoutes() {
       case '/pokemondetails':
         return MaterialPageRoute(
             builder: (_) => PokemonDetailsPage(), settings: settings);
+      case '/selectteam':
+        return MaterialPageRoute(
+            builder: (_) => SelectTeam(), settings: settings);
     }
   };
 }

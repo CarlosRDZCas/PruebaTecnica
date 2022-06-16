@@ -11,20 +11,30 @@ class Pokedex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueGrey,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Image.asset(
-            'assets/images/pokeballs.png',
-            fit: BoxFit.cover,
-          ),
-        ),
-        onPressed: () {},
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: BlocBuilder<PokemonBloc, PokemonState>(
+        builder: (context, state) {
+          return FloatingActionButton(
+            backgroundColor: Colors.blueGrey,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Image.asset(
+                'assets/images/pokeballs.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+            onPressed: () {
+              if (state is PokemonLoadedState) {
+                Navigator.pushNamed(context, '/selectteam',
+                    arguments: state.pokemons);
+              }
+            },
+          );
+        },
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height * .12,
             child: Row(
               children: [
@@ -54,50 +64,60 @@ class Pokedex extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: BlocBuilder<PokemonBloc, PokemonState>(
-              builder: (context, state) {
-                if (state is PokemonInitialState) {
-                  for (var i = 1; i < 151; i++) {
-                    context.read<PokemonBloc>().add(LoadingPokemonEvent(i));
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is PokemonLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is PokemonLoadedState) {
-                  state.pokemons.sort((a, b) => a.id.compareTo(b.id));
-                  return GridView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                    ),
-                    itemCount: state.pokemons.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return FadeIn(
-                          duration: Duration(milliseconds: 500),
-                          delay: Duration(milliseconds: index * 6),
-                          child: Hero(
-                              tag: 'pokemon-${state.pokemons[index].id}',
-                              child: FadeOut(
-                                  child: CardPokemon(
-                                      pokemon: state.pokemons[index]))));
-                    },
-                  );
-                } else if (state is PokemonErrorState) {
-                  return const Center(
-                    child: Text('Error'),
-                  );
-                }
-                return const Center(
-                  child: Text('Error'),
-                );
-              },
-            ),
-          ),
+          CardsGenerator(),
         ],
+      ),
+    );
+  }
+}
+
+class CardsGenerator extends StatelessWidget {
+  const CardsGenerator({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: BlocBuilder<PokemonBloc, PokemonState>(
+        builder: (context, state) {
+          if (state is PokemonInitialState) {
+            for (var i = 1; i < 151; i++) {
+              context.read<PokemonBloc>().add(LoadingPokemonEvent(i));
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is PokemonLoadingState) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is PokemonLoadedState) {
+            state.pokemons.sort((a, b) => a.id.compareTo(b.id));
+            return GridView.builder(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: state.pokemons.length,
+              itemBuilder: (BuildContext context, int index) {
+                return FadeInLeft(
+                    duration: Duration(milliseconds: 500),
+                    child: Hero(
+                        tag: 'pokemon-${state.pokemons[index].id}',
+                        child: FadeOut(
+                            child: CardPokemon(
+                          pokemon: state.pokemons[index],
+                        ))));
+              },
+            );
+          } else if (state is PokemonErrorState) {
+            return const Center(
+              child: Text('Error'),
+            );
+          }
+          return const Center(
+            child: Text('Error'),
+          );
+        },
       ),
     );
   }
