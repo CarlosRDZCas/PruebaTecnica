@@ -7,7 +7,6 @@ import 'package:pokedex/src/widgets/widgets.dart';
 
 import '../bloc/pokemondetails/pokemondetails_bloc.dart';
 import '../models/models.dart';
-import '../services/pokemon_details_service.dart';
 
 class PokemonDetailsPage extends StatelessWidget {
   const PokemonDetailsPage({Key? key}) : super(key: key);
@@ -15,12 +14,9 @@ class PokemonDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pokemon = ModalRoute.of(context)!.settings.arguments as Pokemon;
-    return BlocProvider(
-      create: (context) => PokemondetailsBloc(PokemonDetailsService()),
-      child: SafeArea(
-        child: Scaffold(
-          body: PokemonDetailsBody(pokemon: pokemon),
-        ),
+    return SafeArea(
+      child: Scaffold(
+        body: PokemonDetailsBody(pokemon: pokemon),
       ),
     );
   }
@@ -106,7 +102,7 @@ class Details extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 3,
-        child: FadeInUp(
+        child: FadeInUpBig(
           duration: const Duration(milliseconds: 400),
           child: Container(
               alignment: Alignment.topCenter,
@@ -181,11 +177,10 @@ class Banner extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         height: 300,
-        child: Hero(
-          tag: 'pokemon-${pokemon.id}',
-          child: FadeInDown(
-              delay: const Duration(milliseconds: 200),
-              duration: const Duration(milliseconds: 250),
+        child: FadeInDownBig(
+          duration: const Duration(milliseconds: 400),
+          child: Hero(
+              tag: 'pokemon-${pokemon.id}',
               child: CardPokemon(pokemon: pokemon, pantalla: 'details')),
         ));
   }

@@ -21,7 +21,9 @@ class PokemondetailsBloc
             await _pokemonDetailsServices.getPokemonbyID(event.id!);
         emit(PokemondetailsLoadedState(pokemonDetails: pokemonDetails));
       }
-      if (event is LoadedPokemonDetailsEvent) {}
+      if (event is ReinitPokemonDetailsEvent) {
+        emit(PokemondetailsInitial());
+      }
     });
   }
 }

@@ -48,16 +48,15 @@ class DBProvider {
   Future<bool> insertTeam(TeamModel team) async {
     try {
       final db = await database;
-      final res = await db!.rawInsert('''
+      await db!.rawInsert('''
       INSERT INTO PokemonTeam (Usuario, NombreEquipo) VALUES("${team.usuario}","${team.nombreEquipo}");''');
-      print(res);
+
       for (var element in team.pokemons) {
-        final res2 = await db.rawInsert('''
+        await db.rawInsert('''
           INSERT Into PokemonsTeam (PokemonTeamID,Pokemon) VALUES((select seq from sqlite_sequence where name = "PokemonTeam"),"$element")''');
-        print(res2);
       }
       return true;
-    } catch (Exception) {
+    } catch (ex) {
       return false;
     }
   }
@@ -67,7 +66,7 @@ class DBProvider {
       final db = await database;
       final res = await db!.rawQuery('''
       SELECT * FROM PokemonTeam WHERE Usuario = "$user";''');
-      print(res);
+
       List<TeamModel> listTeam = [];
       for (var element in res) {
         TeamModel team = TeamModel('', '', []);
@@ -75,14 +74,14 @@ class DBProvider {
         team.nombreEquipo = element['NombreEquipo'].toString();
         final res2 = await db.rawQuery('''
           SELECT * FROM PokemonsTeam WHERE PokemonTeamID = ${element['id']};''');
-        print(res2);
+
         for (var element2 in res2) {
           team.pokemons.add(element2['Pokemon'].toString());
         }
         listTeam.add(team);
       }
       return listTeam;
-    } catch (Exception) {
+    } catch (ex) {
       return [];
     }
   }

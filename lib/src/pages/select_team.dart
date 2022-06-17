@@ -41,14 +41,12 @@ class GridBuilderTeam extends StatelessWidget {
         ),
         itemCount: pokemons.length,
         itemBuilder: (BuildContext context, int index) {
-          return SlideInLeft(
-            child: Hero(
-              tag: 'pokemon-${pokemons[index].id}',
-              child: CardPokemon(
-                pokemon: pokemons[index],
-                selectable: true,
-                pantalla: 'Equipo',
-              ),
+          return Hero(
+            tag: 'pokemon-${pokemons[index].id}',
+            child: CardPokemon(
+              pokemon: pokemons[index],
+              selectable: true,
+              pantalla: 'Equipo',
             ),
           );
         });
@@ -128,9 +126,13 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   Future<String?> openDialog(BuildContext context) => showDialog<String?>(
       context: context,
       builder: (context) => AlertDialog(
-            title: const Text("Ingrese el nombre del equipo"),
+            title: const Text("Ingrese el nombre del equipo",
+                style: TextStyle(
+                    fontFamily: 'Pokemon', letterSpacing: 1.8, fontSize: 12)),
             content: TextField(
               controller: controller,
+              style: const TextStyle(
+                  fontFamily: 'Pokemon', letterSpacing: 1.8, fontSize: 12),
               decoration: const InputDecoration(
                 hintText: "Nombre del equipo",
               ),
@@ -140,7 +142,11 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     submit(context);
                   },
-                  child: const Text('Agregar'))
+                  child: const Text('Agregar',
+                      style: TextStyle(
+                          fontFamily: 'Pokemon',
+                          letterSpacing: 1.8,
+                          fontSize: 12)))
             ],
           ));
   void submit(context) {

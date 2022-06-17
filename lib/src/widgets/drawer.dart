@@ -24,9 +24,9 @@ class CustomDrawer extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                Container(
+                const SizedBox(
                   height: 50,
-                  child: const Text(
+                  child: Text(
                     'Tus equipos',
                     style: TextStyle(
                       fontFamily: 'Pokemon',
@@ -64,18 +64,14 @@ class CustomDrawer extends StatelessWidget {
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder:
                                       (BuildContext context, int index2) {
-                                    print(
-                                        snapshot.data![index].pokemons[index2]);
                                     for (var element in pokemons!) {
                                       if (element.name ==
                                           snapshot
                                               .data![index].pokemons[index2]) {
-                                        return Container(
-                                          child: Image.network(
-                                            element.sprites.other!
-                                                .officialArtwork.frontDefault,
-                                            fit: BoxFit.fill,
-                                          ),
+                                        return Image.network(
+                                          element.sprites.other!.officialArtwork
+                                              .frontDefault,
+                                          fit: BoxFit.fill,
                                         );
                                       }
                                     }

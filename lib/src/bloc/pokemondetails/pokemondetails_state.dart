@@ -11,6 +11,7 @@ class PokemondetailsLoadedState extends PokemondetailsState {
   PokemonDetails? pokemonDetails;
   PokemondetailsLoadedState({required this.pokemonDetails});
 }
+
 class PokemondetailsReinitState extends PokemondetailsState {}
 
 class PokemondetailsErrorState extends PokemondetailsState {}

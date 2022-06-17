@@ -1,5 +1,3 @@
-import 'models.dart';
-
 class TeamModel {
   String usuario = '';
   String nombreEquipo = '';

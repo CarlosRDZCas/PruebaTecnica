@@ -9,6 +9,10 @@ class PokemonLoadingState extends PokemonState {}
 
 class PokemonLoadedState extends PokemonState {
   final List<Pokemon>? pokemons;
+  Stream<List<Pokemon>?> get pokemonsStream async* {
+    yield pokemons;
+  }
+
   PokemonLoadedState({required this.pokemons});
 }
 

@@ -11,6 +11,7 @@ class Pokedex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: kToolbarHeight + 20,
         foregroundColor: Colors.black,
@@ -33,7 +34,7 @@ class Pokedex extends StatelessWidget {
           if (state is PokemonLoadedState) {
             return CustomDrawer(pokemons: state.pokemons);
           }
-          return Drawer();
+          return const Drawer();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -60,7 +61,7 @@ class CustomFAB extends StatelessWidget {
           child: FloatingActionButton(
             backgroundColor: Colors.blueGrey,
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(5.0),
               child: Image.asset(
                 'assets/images/pokeballs.png',
                 fit: BoxFit.cover,
@@ -86,6 +87,7 @@ class CardsGenerator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController = ScrollController();
     return Expanded(
       child: BlocBuilder<PokemonBloc, PokemonState>(
         builder: (context, state) {
@@ -107,14 +109,15 @@ class CardsGenerator extends StatelessWidget {
           } else if (state is PokemonLoadedState) {
             state.pokemons!.sort((a, b) => a.id.compareTo(b.id));
             return GridView.builder(
+              // controller: _scrollController,
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
               itemCount: state.pokemons!.length,
               itemBuilder: (BuildContext context, int index) {
-                return FadeInLeft(
-                    duration: const Duration(milliseconds: 500),
+                return SlideInLeft(
+                    duration: const Duration(milliseconds: 200),
                     child: Hero(
                         tag: 'pokemon-${state.pokemons![index].id}',
                         child: FadeOut(

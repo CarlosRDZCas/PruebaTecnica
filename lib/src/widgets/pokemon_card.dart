@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/pokemondetails/pokemondetails_bloc.dart';
 import '../bloc/selectteam/selectteam_bloc.dart';
 import '../models/pokemon_model.dart';
 
@@ -48,14 +49,22 @@ class CardPokemon extends StatelessWidget {
               return Container();
             },
           )
-        : GestureDetector(
-            onTap: () {
-              pantalla == 'details'
-                  ? null
-                  : Navigator.pushNamed(context, '/pokemondetails',
-                      arguments: pokemon);
+        : BlocBuilder<PokemondetailsBloc, PokemondetailsState>(
+            builder: (context, state) {
+              return GestureDetector(
+                onTap: () {
+                  if (pantalla == 'details') {
+                  } else {
+                    context.read<PokemondetailsBloc>().add(
+                          ReinitPokemonDetailsEvent(),
+                        );
+                    Navigator.pushNamed(context, '/pokemondetails',
+                        arguments: pokemon);
+                  }
+                },
+                child: CardBody(pantalla: pantalla, pokemon: pokemon),
+              );
             },
-            child: CardBody(pantalla: pantalla, pokemon: pokemon),
           );
   }
 }
@@ -159,7 +168,7 @@ class CardBody extends StatelessWidget {
               child: Image.network(
                 pokemon!.sprites.other!.officialArtwork.frontDefault,
                 fit: BoxFit.fill,
-                filterQuality: FilterQuality.medium,
+                filterQuality: FilterQuality.low,
               ),
             ),
           ),
