@@ -93,37 +93,6 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           );
-          // return Column(
-          //   children: [
-          //     Container(
-          //       height: 20,
-          //       width: double.infinity,
-          //       child: Text(snapshot.data![]),
-          //     ),
-          //     Expanded(
-          //       child: Row(
-          //         children: [
-          //           Expanded(
-          //             child: ListView.builder(
-          //               itemCount: snapshot.data!.pokemons.length,
-          //               scrollDirection: Axis.horizontal,
-          //               shrinkWrap: true,
-          //               itemBuilder: (BuildContext context, int index) {
-          //                 return Column(
-          //                   children: [
-          //                     Container(
-          //                       child: Text(snapshot.data!.pokemons[index]),
-          //                     ),
-          //                   ],
-          //                 );
-          //               },
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ],
-          // );
         },
       )),
     );
