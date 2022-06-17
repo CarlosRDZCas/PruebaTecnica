@@ -18,41 +18,80 @@ class CustomDrawer extends StatelessWidget {
         future: DBProvider.db.selectTeams(Preferences.getUser()),
         builder:
             (BuildContext context, AsyncSnapshot<List<TeamModel>> snapshot) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return Expanded(
-                child: Column(
-                  children: [
-                    Expanded(child: Text(snapshot.data![index].nombreEquipo)),
-                    Expanded(
-                      child: Row(
+          return Container(
+            padding: const EdgeInsets.only(left: 10, top: 15),
+            height: double.infinity,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                Container(
+                  height: 50,
+                  child: const Text(
+                    'Tus equipos',
+                    style: TextStyle(
+                      fontFamily: 'Pokemon',
+                      fontSize: 20,
+                      letterSpacing: 1.8,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
                         children: [
-                          Expanded(
-                            child: Expanded(
-                              child: ListView.builder(
-                                itemCount:
-                                    snapshot.data![index].pokemons.length,
-                                shrinkWrap: true,
-                                itemBuilder:
-                                    (BuildContext context, int index2) {
-                                  print(snapshot.data![index].pokemons[index2]);
-                                  return Expanded(
-                                    child: Text(
-                                        snapshot.data![index].pokemons[index2]),
-                                  );
-                                },
-                              ),
+                          Text(
+                            snapshot.data![index].nombreEquipo,
+                            style: const TextStyle(
+                              fontFamily: 'Pokemon',
+                              fontSize: 15,
+                              letterSpacing: 1.8,
                             ),
                           ),
+                          Row(
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(top: 15, bottom: 15),
+                                height: 78,
+                                width: 291,
+                                child: ListView.builder(
+                                  itemCount:
+                                      snapshot.data![index].pokemons.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder:
+                                      (BuildContext context, int index2) {
+                                    print(
+                                        snapshot.data![index].pokemons[index2]);
+                                    for (var element in pokemons!) {
+                                      if (element.name ==
+                                          snapshot
+                                              .data![index].pokemons[index2]) {
+                                        return Container(
+                                          child: Image.network(
+                                            element.sprites.other!
+                                                .officialArtwork.frontDefault,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        );
+                                      }
+                                    }
+                                    return Container();
+                                  },
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      ),
-                    )
-                  ],
+                      );
+                    },
+                  ),
                 ),
-              );
-            },
+              ],
+            ),
           );
           // return Column(
           //   children: [

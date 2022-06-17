@@ -24,22 +24,24 @@ class CardPokemon extends StatelessWidget {
                     .add(SelectteamEventInitial(pokemon: pokemon));
               }
               if (state is SelectedState) {
-                return InkWell(
-                  onTap: () {
-                    context
-                        .read<SelectteamBloc>()
-                        .add(SelectingteamEvent(pokemon!.name));
-
-                    if (state is SelectingState) {
+                return Material(
+                  child: InkWell(
+                    onTap: () {
                       context
                           .read<SelectteamBloc>()
-                          .add(SelectedPokemonEvent());
-                    }
-                  },
-                  child: CardBody(
-                    pantalla: pantalla,
-                    pokemon: pokemon,
-                    pokemons: state.selectedPokemons,
+                          .add(SelectingteamEvent(pokemon!.name));
+
+                      if (state is SelectingState) {
+                        context
+                            .read<SelectteamBloc>()
+                            .add(SelectedPokemonEvent());
+                      }
+                    },
+                    child: CardBody(
+                      pantalla: pantalla,
+                      pokemon: pokemon,
+                      pokemons: state.selectedPokemons,
+                    ),
                   ),
                 );
               }
